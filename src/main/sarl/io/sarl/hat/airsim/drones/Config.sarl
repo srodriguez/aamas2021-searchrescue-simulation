@@ -1,0 +1,48 @@
+/** 
+ * 
+ */
+package io.sarl.hat.airsim.drones
+
+import fr.utbm.airsim.api.Vector3r
+import java.util.List
+import io.sarl.hat.airsim.drones.behaviors.exploration.Area
+import io.sarl.hat.airsim.drones.behaviors.exploration.Priority
+
+/** 
+ * @author Sebastian Rodriguez
+ * 
+ */
+class Config extends Object {
+
+	val static areas : List<Area> = newLinkedList
+
+	def static getVictims() : List<Vector3r> {
+		newLinkedList(
+			new Vector3r(20, 20, 0),
+			new Vector3r(50, 50, 0)
+		)
+	}
+
+	def static getFlyAltitude : Float {
+		-7f
+	}
+
+	def static viewRange : Float {
+		5f
+	}
+
+	def static getAreas : List<Area> {
+		if (areas.empty) {
+			val size = 10f
+			val areasIt = 2
+			for (var i = -areasIt; i <= areasIt; i++) {
+				for (var j = -areasIt; j <= areasIt; j++) {
+					areas.add(new Area(i * size, j * size, size, size, Priority.LOW))
+				}
+			}	
+		}
+		
+
+		areas
+	}
+}

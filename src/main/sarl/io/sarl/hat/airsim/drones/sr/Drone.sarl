@@ -1,0 +1,118 @@
+/** 
+ * 
+ */
+package io.sarl.hat.airsim.drones.sr
+
+import fr.utbm.airsim.api.LandedState
+import fr.utbm.airsim.api.MultirotorState
+import fr.utbm.airsim.api.Vector3r
+import io.sarl.airsim.perceptions.MultirotorStatePerception
+import io.sarl.airsim.perceptions.sim.SimGroundTruthKinematicsPerception
+import io.sarl.core.Behaviors
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Initialize
+import io.sarl.core.Logging
+import io.sarl.core.Schedules
+import io.sarl.hat.airsim.drones.Config
+import io.sarl.hat.airsim.drones.behaviors.exploration.Area
+import io.sarl.hat.airsim.drones.behaviors.exploration.ExploreArea
+import io.sarl.hat.airsim.drones.capacities.IndividualMultirotorControlCapacity
+import io.sarl.hat.airsim.drones.capacities.SimControllerForwardIndividualMultirotorControl
+
+/** 
+ * @author sebastianrodriguez
+ * 
+ */
+event StartExploration
+
+event VictimDetected
+
+agent Drone {
+
+	uses Logging, Schedules, Behaviors, DefaultContextInteractions, IndividualMultirotorControlCapacity
+
+	var area : Area
+
+	var state : MultirotorState = new MultirotorState
+
+	var takingOff = false
+
+	var position : Vector3r
+
+	var name : String
+
+	on Initialize {
+		// registerBehavior(new RandomWalkExploreArea(this))
+		this.name = occurrence.parameters.get(0) as String
+		setSkill(new SimControllerForwardIndividualMultirotorControl(), IndividualMultirotorControlCapacity)
+	}
+
+	on TakeOffCompleted {
+		info("Airbone! Starting Exploration landState = {0} ", this.state.landedState)
+		wake(new StartExploration)
+	}
+
+	on StartExploration [isFromMe] {
+		if (this.area != null) {
+			info("Going to area center at " + area.x + "," + area.y)
+			
+			moveToPosition(this.area.centerX, this.area.centerY, Config.flyAltitude)
+			
+		} else {
+			in(1.seconds)[wake(new StartExploration)]
+		}
+	}
+
+	on ExploreArea {
+		this.area = occurrence.area
+	}
+
+	on SimGroundTruthKinematicsPerception {
+		this.position = occurrence.state.position
+
+		if (this.area.contains(position.x, position.y)) {
+
+			wake(new VictimDetected)
+
+		} else {
+			info("{4} : I am at [{0},{1}]; need to go to [{2},{3}] ", position.x, position.y, this.area.centerX,
+				this.area.centerY, this.name)
+		}
+	}
+
+	on MultirotorStatePerception {
+		this.state = occurrence.multirotorState
+
+		if (this.state.landedState == LandedState.LANDED && !takingOff) {
+			takeOff
+			takingOff = true
+		} else if (this.state.landedState == LandedState.FLYING) {
+			info("I am flying ...")
+		} else { // Flying already.... Perception not complete!
+		}
+	}
+
+	on VictimDetected [isFromMe] {
+
+		val TOP = -10f
+		val BOTTOM = -3f
+
+		val tooHigh = this.position.z < -7
+
+		val tooLow = this.position.z > -5
+
+		val dest = new Vector3r(this.area.centerX, this.area.centerY, - 100f)
+
+		if (tooHigh) {
+			dest.z = BOTTOM
+		} else if (tooLow) {
+			dest.z = TOP
+		}
+
+		info("{0} : I am in my area, signaling - LOW : {1}, HIGH {2} - destination {3}", this.name, tooLow, tooHigh,
+			dest)
+
+		moveToPosition(dest.x, dest.y, dest.z)
+	}
+
+}

@@ -1,0 +1,12 @@
+/** 
+ * 
+ */
+package io.sarl.hat.airsim.drones.behaviors.exploration
+
+/** 
+ * @author sebastianrodriguez
+ * 
+ */
+behavior PlowSweep {
+
+}

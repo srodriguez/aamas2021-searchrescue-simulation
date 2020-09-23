@@ -1,0 +1,22 @@
+/** 
+ * 
+ */
+package io.sarl.hat.airsim.drones.capacities
+
+/** 
+ * @author Sebastian Rodriguez
+ * 
+ */
+capacity IndividualMultirotorControlCapacity {
+	def takeOff
+
+	/** 
+	 * Move-to-position order for the given vehicle
+	 * @param x the x position
+	 * @param y the y position
+	 * @param z the z position
+	 * @param velocity the speed to move the point
+	 */
+	def moveToPosition(x : Float, y : Float, z : Float, velocity : Float = 5f)
+
+}

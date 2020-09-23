@@ -1,0 +1,14 @@
+/** 
+ * 
+ */
+package io.sarl.hat.airsim.drones
+
+import io.sarl.hat.airsim.drones.behaviors.exploration.Area
+
+/** 
+ * @author Sebastian Rodriguez
+ * 
+ */
+capacity SearchRescueBeliefs {
+	def assignedArea : Area
+}

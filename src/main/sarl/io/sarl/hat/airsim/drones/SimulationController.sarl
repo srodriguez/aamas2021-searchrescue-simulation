@@ -1,0 +1,118 @@
+/** 
+ * 
+ */
+package io.sarl.hat.airsim.drones
+
+import io.sarl.airsim.perceptions.MultirotorStatePerception
+import io.sarl.airsim.perceptions.sim.SimGroundTruthKinematicsPerception
+import io.sarl.airsim.simulation.capacities.MultirotorSimulationControlCapacity
+import io.sarl.airsim.simulation.capacities.MultirotorSimulationPerceptionCapacity
+import io.sarl.airsim.simulation.capacities.SimulationControlCapacity
+import io.sarl.airsim.simulation.capacities.SimulationPerceptionCapacity
+import io.sarl.airsim.simulation.skills.airsim.AirSimMultirotorControl
+import io.sarl.airsim.simulation.skills.airsim.AirSimMultirotorSimulationPerception
+import io.sarl.airsim.simulation.skills.airsim.AirSimSimulationControl
+import io.sarl.airsim.simulation.skills.airsim.AirSimSimulationPerception
+import io.sarl.core.Behaviors
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Initialize
+import io.sarl.core.Logging
+import io.sarl.core.Schedules
+import io.sarl.hat.airsim.drones.sr.MoveToPoint
+import io.sarl.hat.airsim.drones.sr.TakeOff
+import io.sarl.lang.core.Event
+import java.util.HashMap
+import java.util.UUID
+import io.sarl.hat.airsim.drones.sr.TakeOffCompleted
+
+/** 
+ * @author Sebastian Rodriguez
+ * 
+ */
+agent SimulationController {
+
+	uses Logging, DefaultContextInteractions, Schedules, Behaviors
+
+	uses SimulationControlCapacity, MultirotorSimulationControlCapacity
+	uses SimulationPerceptionCapacity, MultirotorSimulationPerceptionCapacity
+
+	val drones : HashMap<UUID, String> = newHashMap
+
+	val simulationStepMilis : long = 200
+
+	on Initialize {
+		var server : String
+		var port : Integer
+
+		if (occurrence.parameters.size == 2) {
+			server = occurrence.parameters.get(0) as String
+			port = occurrence.parameters.get(1) as Integer
+		}
+
+		// Install the simulation control capacities
+		setSkill(new AirSimSimulationControl(server, port), SimulationControlCapacity)
+		setSkill(new AirSimMultirotorControl(server, port), MultirotorSimulationControlCapacity)
+		setSkill(new AirSimSimulationPerception(server, port), SimulationPerceptionCapacity)
+		setSkill(new AirSimMultirotorSimulationPerception(server, port), MultirotorSimulationPerceptionCapacity)
+
+		info("Simulator Controller up...")
+		in(simulationStepMilis)[wake(new UpdatePerceptions)]
+	}
+
+	on UpdatePerceptions [isFromMe] {
+		for (aid : drones.keySet) {
+			val name = drones.get(aid)
+
+			val state = name.multirotorState
+			val kinematics = name.simGetGroundTruthKinematics
+
+			aid.emitToAgent(new SimGroundTruthKinematicsPerception(kinematics))
+			aid.emitToAgent(new MultirotorStatePerception(state))
+		}
+
+		in(simulationStepMilis)[wake(new UpdatePerceptions)]
+	}
+
+	on AddSimulatedDrone {
+		drones.put(occurrence.agentID, occurrence.droneName)
+		occurrence.droneName.enableControl
+	}
+
+	on MoveToPoint {
+		
+		occurrence.droneBody.moveToPosition(occurrence.x, occurrence.y, occurrence.z, occurrence.velocity)
+	}
+
+	on TakeOff {
+		val d = occurrence.droneBody
+		info("{0} asking to take of...", d)
+		d.takeOff.join
+		d.hover.join
+		occurrence.droneMind.emitToAgent(new TakeOffCompleted)
+	}
+
+	def droneBody(evt : Event) {
+		drones.get(evt.source.UUID)
+	}
+
+	def droneMind(evt : Event) : UUID {
+		evt.source.UUID
+	}
+
+	def emitToAgent(aid : UUID, evt : Event) {
+		emit(evt)[it.UUID == aid]
+	}
+
+}
+
+event UpdatePerceptions
+
+event AddSimulatedDrone {
+	val agentID : UUID
+	val droneName : String
+
+	new(id : UUID, name : String) {
+		this.agentID = id
+		this.droneName = name
+	}
+}

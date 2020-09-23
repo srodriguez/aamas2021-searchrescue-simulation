@@ -1,0 +1,71 @@
+/** 
+ * 
+ */
+package io.sarl.hat.airsim.drones
+
+import io.sarl.core.Destroy
+import io.sarl.core.Initialize
+import io.sarl.core.Lifecycle
+import io.sarl.core.Logging
+import io.sarl.hat.airsim.drones.sr.Drone
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.hat.airsim.drones.behaviors.exploration.ExploreArea
+import io.sarl.core.Schedules
+import io.sarl.core.Behaviors
+import java.util.HashMap
+import java.util.UUID
+
+/** 
+ * @author sebastian rodriguez
+ * 
+ */
+agent BootAgent {
+	uses Logging, Lifecycle, DefaultContextInteractions, Schedules, Behaviors
+
+	//	val SERVER_IP = "131.170.26.250" // Fabio's
+	val SERVER_IP = "192.168.1.100" // Seb's
+	val SERVER_PORT = 41451
+
+	val pool = newLinkedList("Alpha", "Bravo", "Charly", "Delta")
+
+	//val pool = newLinkedList("S0", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "S11", "S12", "S13", "S14", "S15", "S16", "S17", "S18", "S19")
+	val drones : HashMap<UUID, String> = newHashMap
+
+	on Initialize {
+
+		info("Booting Simulations")
+		info("{0} total search areas: {1}", Config.areas.size, Config.areas)
+
+		SimulationController.spawn(SERVER_IP, SERVER_PORT)
+
+		for (name : pool) {
+			info("Spawning " + name)
+			val id = Drone.spawn(name)
+			info("Spawning agents for Drone {0}", name)
+			drones.put(id, name)
+			emit(new AddSimulatedDrone(id, name))
+		}
+
+		in(1000)[wake(new StartSearchAndRescue)]
+
+		// Tracker.spawn(server, port, pool)
+	}
+
+	on StartSearchAndRescue {
+		info("Starting S&R...")
+		var areaNumber = 0
+		val areas = Config.areas
+		for (id : drones.keySet) {
+			val aNum = areaNumber++
+			emit(new ExploreArea(drones.get(id), areas.get(aNum)))[it.UUID == id]
+
+		}
+	}
+
+}
+
+event StartSearchAndRescue {
+}
+
+event StopSearchAndRescue {
+}

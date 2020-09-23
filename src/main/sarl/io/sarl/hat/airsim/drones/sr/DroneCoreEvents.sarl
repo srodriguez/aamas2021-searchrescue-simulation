@@ -1,0 +1,44 @@
+package io.sarl.hat.airsim.drones.sr
+
+/** 
+ * Core Events to control a Drone
+ * @author Sebastian Rodriguez
+ */
+
+/** 
+ * Command to Take off
+ */
+event TakeOff
+
+/* 
+ * Signal that take off is completed
+ */
+event TakeOffCompleted
+
+event LocationEvent {
+	val x : Float
+	val y : Float
+	val z : Float
+
+	new(x : Float, y : Float, z : Float, vel : Float = 5f) {
+		this.x = x
+		this.y = y
+		this.z = z
+	}
+}
+
+/** 
+ * Command to Move to a point in space at a fix speed
+ */
+event MoveToPoint extends LocationEvent {
+
+	val velocity : Float
+
+	new(x : Float, y : Float, z : Float, vel : Float = 5f) {
+		super(x, y, z)
+		this.velocity = vel
+	}
+
+}
+
+event DestinationReached
