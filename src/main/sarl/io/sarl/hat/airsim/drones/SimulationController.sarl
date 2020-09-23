@@ -18,12 +18,9 @@ import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Initialize
 import io.sarl.core.Logging
 import io.sarl.core.Schedules
-import io.sarl.hat.airsim.drones.sr.MoveToPoint
-import io.sarl.hat.airsim.drones.sr.TakeOff
 import io.sarl.lang.core.Event
 import java.util.HashMap
 import java.util.UUID
-import io.sarl.hat.airsim.drones.sr.TakeOffCompleted
 
 /** 
  * @author Sebastian Rodriguez
@@ -78,8 +75,7 @@ agent SimulationController {
 		occurrence.droneName.enableControl
 	}
 
-	on MoveToPoint {
-		
+	on MoveToPosition {
 		occurrence.droneBody.moveToPosition(occurrence.x, occurrence.y, occurrence.z, occurrence.velocity)
 	}
 

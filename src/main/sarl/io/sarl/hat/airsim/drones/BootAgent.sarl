@@ -3,15 +3,14 @@
  */
 package io.sarl.hat.airsim.drones
 
-import io.sarl.core.Destroy
+import io.sarl.core.Behaviors
+import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
-import io.sarl.hat.airsim.drones.sr.Drone
-import io.sarl.core.DefaultContextInteractions
-import io.sarl.hat.airsim.drones.behaviors.exploration.ExploreArea
 import io.sarl.core.Schedules
-import io.sarl.core.Behaviors
+import io.sarl.hat.airsim.drones.behaviors.exploration.ExploreArea
+import io.sarl.hat.airsim.drones.sr.Drone
 import java.util.HashMap
 import java.util.UUID
 
@@ -53,6 +52,7 @@ agent BootAgent {
 
 	on StartSearchAndRescue {
 		info("Starting S&R...")
+		
 		var areaNumber = 0
 		val areas = Config.areas
 		for (id : drones.keySet) {

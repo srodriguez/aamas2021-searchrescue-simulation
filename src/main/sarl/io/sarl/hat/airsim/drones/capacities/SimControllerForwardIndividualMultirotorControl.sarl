@@ -3,12 +3,10 @@
  */
 package io.sarl.hat.airsim.drones.capacities
 
-import io.sarl.core.Logging
-import io.sarl.hat.airsim.drones.capacities.IndividualMultirotorControlCapacity
-import io.sarl.core.Behaviors
-import io.sarl.hat.airsim.drones.sr.MoveToPoint
 import io.sarl.core.DefaultContextInteractions
-import io.sarl.hat.airsim.drones.sr.TakeOff
+import io.sarl.core.Logging
+import io.sarl.hat.airsim.drones.MoveToPosition
+import io.sarl.hat.airsim.drones.TakeOff
 
 /** 
  * @author Sebastian Rodriguez
@@ -30,14 +28,11 @@ skill SimControllerForwardIndividualMultirotorControl implements IndividualMulti
 	}
 
 	override moveToPosition(x : Float, y : Float, z : Float, velocity : Float) {
-		emit(new MoveToPoint(x, y, z, velocity))
+		emit(new MoveToPosition(x, y, z, velocity))
 	}
 
 	override takeOff {
 		emit(new TakeOff)
 		
 	}
-	
-	
-	
 }

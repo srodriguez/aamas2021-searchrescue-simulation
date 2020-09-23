@@ -1,4 +1,4 @@
-package io.sarl.hat.airsim.drones.sr
+package io.sarl.hat.airsim.drones
 
 /** 
  * Core Events to control a Drone
@@ -30,7 +30,7 @@ event LocationEvent {
 /** 
  * Command to Move to a point in space at a fix speed
  */
-event MoveToPoint extends LocationEvent {
+event MoveToPosition extends LocationEvent {
 
 	val velocity : Float
 
@@ -41,4 +41,3 @@ event MoveToPoint extends LocationEvent {
 
 }
 
-event DestinationReached

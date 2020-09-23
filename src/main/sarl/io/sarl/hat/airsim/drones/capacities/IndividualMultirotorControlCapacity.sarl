@@ -3,12 +3,15 @@
  */
 package io.sarl.hat.airsim.drones.capacities
 
+import io.sarl.hat.airsim.drones.TakeOffCompleted
+
 /** 
  * @author Sebastian Rodriguez
  * 
  */
 capacity IndividualMultirotorControlCapacity {
-	def takeOff
+	
+	def takeOff fires TakeOffCompleted
 
 	/** 
 	 * Move-to-position order for the given vehicle

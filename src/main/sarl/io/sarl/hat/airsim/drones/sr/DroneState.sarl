@@ -1,0 +1,47 @@
+/** 
+ * 
+ */
+package io.sarl.hat.airsim.drones.sr
+
+import fr.utbm.airsim.api.Vector3r
+import io.sarl.airsim.perceptions.sim.SimGroundTruthKinematicsPerception
+import io.sarl.core.Behaviors
+
+/** 
+ * @author Sebastian Rodriguez
+ * 
+ */
+capacity DroneState {
+	def getPosition : Vector3r
+	def setPosition(pos : Vector3r)
+}
+
+skill DroneStateSkill implements DroneState {
+	var position : Vector3r = new Vector3r
+
+	def getPosition : Vector3r {
+		synchronized (this.position) {
+			this.position
+		}
+
+	}
+
+	def setPosition(pos : Vector3r) {
+		synchronized (this.position) {
+			this.position = pos
+		}
+	}
+}
+
+
+behavior AirsimDroneStateUpdater {
+	uses DroneState, Behaviors
+
+	on SimGroundTruthKinematicsPerception {
+		position = occurrence.state.position
+		wake(new DronePerceptionsUpdated)
+
+	}
+
+
+}

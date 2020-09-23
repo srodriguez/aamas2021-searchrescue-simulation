@@ -1,0 +1,38 @@
+/** 
+ * 
+ */
+package io.sarl.hat.airsim.drones.sr
+
+import fr.utbm.airsim.api.Vector3r
+import io.sarl.core.Logging
+import io.sarl.hat.airsim.drones.capacities.IndividualMultirotorControlCapacity
+
+/** 
+ * @author Sebastian Rodriguez
+ * 
+ */
+behavior VictimDetection {
+	uses Logging, IndividualMultirotorControlCapacity, DroneState, SearchRescueBeliefs
+
+	on VictimDetected [isFromMe] {
+
+		val TOP = -10f
+		val BOTTOM = -3f
+
+		val tooHigh = position.z < -7
+
+		val tooLow = position.z > -5
+
+		val dest = new Vector3r(assignedArea.centerX, assignedArea.centerY, - 100f)
+
+		if (tooHigh) {
+			dest.z = BOTTOM
+		} else if (tooLow) {
+			dest.z = TOP
+		}
+
+		info("I am in my area, signaling - LOW : {0}, HIGH {1} - destination {2}", tooLow, tooHigh, dest)
+
+		moveToPosition(dest.x, dest.y, dest.z)
+	}
+}
