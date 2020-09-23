@@ -1,0 +1,44 @@
+/** 
+ * 
+ */
+package io.sarl.hat.airsim.drones.behaviors
+
+import fr.utbm.airsim.api.Vector3r
+import io.sarl.core.Logging
+import io.sarl.hat.airsim.drones.capacities.IndividualMultirotorControlCapacity
+import io.sarl.hat.airsim.drones.sr.DroneState
+import io.sarl.hat.airsim.drones.sr.SearchRescueBeliefs
+
+/** 
+ * @author Sebastian Rodriguez
+ * 
+ */
+event PerformFirstResponderSignaling
+
+behavior VerticalFirtResponderSignaling {
+	uses Logging, IndividualMultirotorControlCapacity, DroneState, SearchRescueBeliefs
+
+	on PerformFirstResponderSignaling [isFromMe] {
+
+		val TOP = -10f
+		val BOTTOM = -3f
+
+		val tooHigh = position.z < -7
+
+		val tooLow = position.z > -5
+
+		val dest = new Vector3r(position.x, position.y, - 100f)
+
+		if (tooHigh) {
+			dest.z = BOTTOM
+		} else if (tooLow) {
+			dest.z = TOP
+		}
+
+		// info("Signaling - LOW : {0}, HIGH {1} - destination {2}", tooLow, tooHigh, dest)
+		info("{6} - {3}: Area [{0},{1},{2}] -> nextPosition : [{4},{5}] ", assignedArea.x, assignedArea.y,
+			assignedArea.priority, "SIGNALING", position.x, position.y, name)
+
+		moveToPosition(dest)
+	}
+}

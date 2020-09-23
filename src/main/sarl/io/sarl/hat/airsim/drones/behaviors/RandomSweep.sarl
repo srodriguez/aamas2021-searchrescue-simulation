@@ -1,0 +1,51 @@
+/** 
+ * 
+ */
+package io.sarl.hat.airsim.drones.behaviors
+
+import fr.utbm.airsim.api.Vector3r
+import io.sarl.hat.airsim.drones.Config
+import io.sarl.hat.airsim.drones.capacities.IndividualMultirotorControlCapacity
+import io.sarl.hat.airsim.drones.sr.SearchRescueBeliefs
+import java.util.Random
+import io.sarl.hat.airsim.drones.sr.DroneState
+import io.sarl.core.Logging
+
+/** 
+ * @author sebastianrodriguez
+ * 
+ */
+event PerformRandomSweep extends PerformExploration
+
+behavior RandomSweep {
+	uses IndividualMultirotorControlCapacity, Logging
+
+	uses SearchRescueBeliefs, DroneState
+
+	val random = new Random();
+
+	var nextPosition : Vector3r = null
+
+	on PerformRandomSweep [isFromMe] {
+
+		// get a random point inside the assigned area
+		if (nextPosition === null) {
+			nextPosition = selectNextPosition
+		}
+
+		if (isInPosition(nextPosition)) {
+			nextPosition = selectNextPosition
+		}
+
+		// info("Area [{0},{1},{2}] : {3} -> nextPosition : [{4},{5}] ", assignedArea.x, assignedArea.y, assignedArea.priority, "RANDOM", nextPosition.x, nextPosition.y)
+		moveToPosition(nextPosition)
+	}
+
+	def selectNextPosition : Vector3r {
+		val x = assignedArea.x + random.nextFloat() * assignedArea.width;
+		val y = assignedArea.y + random.nextFloat() * assignedArea.height;
+
+		new Vector3r(x, y, Config.flyAltitude)
+	}
+
+}

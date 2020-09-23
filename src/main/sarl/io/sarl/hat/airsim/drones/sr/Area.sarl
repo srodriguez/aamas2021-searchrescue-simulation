@@ -1,25 +1,4 @@
-/** 
- * 
- */
-package io.sarl.hat.airsim.drones.behaviors.exploration
-
-import org.eclipse.xtend.lib.annotations.Data
-
-/** 
- * @author sebastianrodriguez
- * 
- */
-event ExplorationEvent
-
-event ExploreArea {
-	val area : Area
-	val droneName : String
-
-	new (droneName : String, area : Area) {
-		this.droneName = droneName
-		this.area = area
-	}
-}
+package io.sarl.hat.airsim.drones.sr
 
 /* 
  * Square area defined by
@@ -38,15 +17,14 @@ class Area {
 	def contains(x : Float, y : Float) : boolean {
 		return x >= this.x && x <= this.x + width && y >= this.y && y <= this.y + height
 	}
-	
-	def centerX : float{
-		x+width/2
+
+	def centerX : float {
+		x + width / 2
 	}
 
 	def centerY : float {
 		y + height / 2
 	}
-	
 
 }
 

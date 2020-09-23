@@ -3,40 +3,59 @@
  */
 package io.sarl.hat.airsim.drones.sr
 
-import fr.utbm.airsim.api.MultirotorState
 import io.sarl.core.Behaviors
 import io.sarl.core.Initialize
 import io.sarl.core.Logging
-import io.sarl.core.Schedules
-import io.sarl.hat.airsim.drones.Config
-import io.sarl.hat.airsim.drones.TakeOffCompleted
-import io.sarl.hat.airsim.drones.behaviors.exploration.ExploreArea
+import io.sarl.hat.airsim.drones.behaviors.ExploreArea
+import io.sarl.hat.airsim.drones.behaviors.PerformFirstResponderSignaling
+import io.sarl.hat.airsim.drones.behaviors.PerformPlowSweep
+import io.sarl.hat.airsim.drones.behaviors.PerformRandomSweep
+import io.sarl.hat.airsim.drones.behaviors.PlowSweep
+import io.sarl.hat.airsim.drones.behaviors.RandomSweep
+import io.sarl.hat.airsim.drones.behaviors.VerticalFirtResponderSignaling
+import io.sarl.hat.airsim.drones.behaviors.VictimDetection
 import io.sarl.hat.airsim.drones.capacities.IndividualMultirotorControlCapacity
 import io.sarl.hat.airsim.drones.capacities.SimControllerForwardIndividualMultirotorControl
-import java.util.concurrent.atomic.AtomicBoolean
+
+import static io.sarl.hat.airsim.drones.sr.DroneIntention.*
 
 /** 
  * @author sebastianrodriguez
  * 
  */
-event VictimDetected
+event VictimDetected {
+	val x : float
+	val y : float
+
+	new(x : float, y : float) {
+		this.x = x
+		this.y = y
+	}
+}
 
 event DronePerceptionsUpdated
 
+enum DroneIntention {
+	TAKEOFF,
+	IDLE,
+	EXPLORE,
+	SIGNAL_FR
+}
+
+@SuppressWarnings("potential_field_synchronization_problem")
 agent Drone {
 
-	uses Logging, Schedules, Behaviors
+	uses Logging, Behaviors
 
 	uses IndividualMultirotorControlCapacity, DroneState
 	uses SearchRescueBeliefs
 
-	var takingOff : AtomicBoolean = new AtomicBoolean(false)
+	var intention = TAKEOFF
 
-	var name : String
+	
 
 	on Initialize {
 
-		this.name = occurrence.parameters.get(0) as String
 
 		// Setup Skill to control my body
 		setSkill(new SimControllerForwardIndividualMultirotorControl(), IndividualMultirotorControlCapacity)
@@ -45,12 +64,23 @@ agent Drone {
 		setSkill(new DroneStateSkill, DroneState)
 		registerBehavior(new AirsimDroneStateUpdater(this))
 
+		name = occurrence.parameters.get(0) as String
+		
+
+
 		// Set beliefs for Search and Rescue Operations
 		setSkill(new SearchRescueBeliefsSkill, SearchRescueBeliefs)
 
-		// Behaviors
-		// to detect victims
+		// Behaviors to
+		// detect victims
 		registerBehavior(new VictimDetection(this))
+
+		// Signal First Responders a victim location
+		registerBehavior(new VerticalFirtResponderSignaling(this))
+
+		// Explore
+		registerBehavior(new RandomSweep(this))
+		registerBehavior(new PlowSweep(this))
 	}
 
 	/** 
@@ -60,21 +90,42 @@ agent Drone {
 		assignedArea = occurrence.area
 	}
 
+	on VictimDetected [isFromMe] {
+		info("{2} VictimDetected {0},{1}", occurrence.x, occurrence.y , name)
+		this.intention = SIGNAL_FR
+	}
+
 	on DronePerceptionsUpdated [isFromMe] {
 
-		if (!this.takingOff.get) {
-			takeOff
-			takingOff.set(true)
-		} else if (assignedArea.contains(position.x, position.y)) {
-
-			wake(new VictimDetected)
-
-		} else {
-			info("{4} : I am at [{0},{1}]; need to go to [{2},{3}] ", position.x, position.y, assignedArea.centerX,
-				assignedArea.centerY, this.name)
-			moveToPosition(assignedArea.centerX, assignedArea.centerY, Config.flyAltitude)
+		switch (this.intention) {
+			case TAKEOFF:
+				doTakeOff
+			case EXPLORE:
+				doExplore
+			case SIGNAL_FR:
+				doSignalFirstResponders
+			default:
+				error("Unknown intention: " + this.intention)
 		}
 
+	}
+
+	def doTakeOff {
+		takeOff;
+		this.intention = EXPLORE
+	}
+
+	def doExplore {
+
+		if (assignedArea.priority == Priority.LOW) {
+			wake(new PerformRandomSweep)
+		} else { // Priority HIGH
+			wake(new PerformPlowSweep)
+		}
+	}
+
+	def doSignalFirstResponders {
+		wake(new PerformFirstResponderSignaling)
 	}
 
 }

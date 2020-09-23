@@ -1,0 +1,36 @@
+/** 
+ * 
+ */
+package io.sarl.hat.airsim.drones.behaviors
+
+import fr.utbm.airsim.api.Vector3r
+import io.sarl.core.Behaviors
+import io.sarl.core.Logging
+import io.sarl.hat.airsim.drones.Config
+import io.sarl.hat.airsim.drones.sr.DronePerceptionsUpdated
+import io.sarl.hat.airsim.drones.sr.DroneState
+import io.sarl.hat.airsim.drones.sr.VictimDetected
+
+/** 
+ * @author Sebastian Rodriguez
+ * 
+ */
+behavior VictimDetection {
+	uses Logging, Behaviors
+	uses DroneState
+
+	on DronePerceptionsUpdated {
+
+		for (vic : Config.victimLocations) {
+			// Simulate we can see the ground. If you are above the victim
+			val p = new Vector3r(vic.x, vic.y, position.z)
+
+			// View Range, 3 meters
+			if (isInPosition(p, 3)) {
+
+				wake(new VictimDetected(p.x, p.y))
+			}
+		}
+
+	}
+}

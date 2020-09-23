@@ -4,22 +4,34 @@
 package io.sarl.hat.airsim.drones
 
 import fr.utbm.airsim.api.Vector3r
+import io.sarl.hat.airsim.drones.sr.Area
+import io.sarl.hat.airsim.drones.sr.Priority
 import java.util.List
-import io.sarl.hat.airsim.drones.behaviors.exploration.Area
-import io.sarl.hat.airsim.drones.behaviors.exploration.Priority
 
 /** 
+ * 
+ * +-----+--------------+---------------+
+ * |     |     LOW      |               |              
+ * |     |    NO-VIC    |               |
+ * +--(-20,20)----------+---------------+
+ * |     |              |   HIGH        |              
+ * |     |              |  VIC (15,15)  |
+ * +--(-20,0)---------(0,0)-------------+   
+ * |     |    LOW       |    HIGH       |
+ * |     |  NO-VIC      |    NO-VIC     |
+ * +-(-20,-20)-------(0,-20)------------+
+ *  
  * @author Sebastian Rodriguez
  * 
  */
 class Config extends Object {
 
 	val static areas : List<Area> = newLinkedList
+	val static areaSize = 20f
 
-	def static getVictims() : List<Vector3r> {
+	def static getVictimLocations() : List<Vector3r> {
 		newLinkedList(
-			new Vector3r(20, 20, 0),
-			new Vector3r(50, 50, 0)
+			new Vector3r(15,15, 0)
 		)
 	}
 
@@ -33,16 +45,31 @@ class Config extends Object {
 
 	def static getAreas : List<Area> {
 		if (areas.empty) {
-			val size = 10f
-			val areasIt = 2
-			for (var i = -areasIt; i <= areasIt; i++) {
-				for (var j = -areasIt; j <= areasIt; j++) {
-					areas.add(new Area(i * size, j * size, size, size, Priority.LOW))
-				}
-			}	
+			// areas.addAll(generateAreas)
+			areas.addAll(fixAreas)
 		}
-		
-
 		areas
+	}
+
+	def static fixAreas : List<Area> {
+		val res = newLinkedList
+		res.add(new Area(-20f, 20f, areaSize, areaSize, Priority.LOW))
+		res.add(new Area(0f, 0f, areaSize, areaSize, Priority.HIGH))
+		res.add(new Area(-20f, -20f, areaSize, areaSize, Priority.LOW))		
+		res.add(new Area(0f, -20f, areaSize, areaSize, Priority.HIGH))
+		
+		res
+	}
+
+	def static generateAreas : List<Area> {
+		val res = newLinkedList
+
+		val areasIt = 2
+		for (var i = -areasIt; i <= areasIt; i++) {
+			for (var j = -areasIt; j <= areasIt; j++) {
+				res.add(new Area(i * areaSize, j * areaSize, areaSize, areaSize, Priority.LOW))
+			}
+		}
+		res
 	}
 }

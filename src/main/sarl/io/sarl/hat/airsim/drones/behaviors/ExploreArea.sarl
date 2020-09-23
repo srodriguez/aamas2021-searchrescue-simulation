@@ -1,0 +1,23 @@
+/** 
+ * 
+ */
+package io.sarl.hat.airsim.drones.behaviors
+
+import io.sarl.hat.airsim.drones.sr.Area
+
+/** 
+ * @author sebastianrodriguez
+ * 
+ */
+
+event ExploreArea {
+	val area : Area
+	val droneName : String
+
+	new (droneName : String, area : Area) {
+		this.droneName = droneName
+		this.area = area
+	}
+}
+
+event PerformExploration

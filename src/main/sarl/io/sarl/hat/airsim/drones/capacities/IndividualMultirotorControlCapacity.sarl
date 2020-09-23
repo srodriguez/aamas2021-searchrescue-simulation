@@ -3,6 +3,7 @@
  */
 package io.sarl.hat.airsim.drones.capacities
 
+import fr.utbm.airsim.api.Vector3r
 import io.sarl.hat.airsim.drones.TakeOffCompleted
 
 /** 
@@ -20,6 +21,8 @@ capacity IndividualMultirotorControlCapacity {
 	 * @param z the z position
 	 * @param velocity the speed to move the point
 	 */
-	def moveToPosition(x : Float, y : Float, z : Float, velocity : Float = 5f)
+	def moveToPosition(x : Float, y : Float, z : Float, velocity : Float = 3f)
+
+	def moveToPosition(pos: Vector3r, velocity : Float = 3f)
 
 }

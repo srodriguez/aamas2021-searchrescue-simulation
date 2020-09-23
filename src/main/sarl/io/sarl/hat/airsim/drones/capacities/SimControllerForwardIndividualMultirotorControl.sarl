@@ -7,6 +7,7 @@ import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Logging
 import io.sarl.hat.airsim.drones.MoveToPosition
 import io.sarl.hat.airsim.drones.TakeOff
+import fr.utbm.airsim.api.Vector3r
 
 /** 
  * @author Sebastian Rodriguez
@@ -33,6 +34,11 @@ skill SimControllerForwardIndividualMultirotorControl implements IndividualMulti
 
 	override takeOff {
 		emit(new TakeOff)
-		
+
 	}
+
+	override moveToPosition(pos : Vector3r, velocity : Float) {
+		this.moveToPosition(pos.x, pos.y, pos.z, velocity)
+	}
+
 }

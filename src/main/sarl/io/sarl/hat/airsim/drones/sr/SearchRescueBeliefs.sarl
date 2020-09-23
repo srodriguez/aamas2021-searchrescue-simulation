@@ -3,9 +3,6 @@
  */
 package io.sarl.hat.airsim.drones.sr
 
-import io.sarl.hat.airsim.drones.behaviors.exploration.Area
-import io.sarl.hat.airsim.drones.behaviors.exploration.Priority
-
 /** 
  * @author Sebastian Rodriguez
  * 

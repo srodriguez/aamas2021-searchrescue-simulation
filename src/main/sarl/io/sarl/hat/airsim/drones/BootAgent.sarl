@@ -9,7 +9,7 @@ import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
 import io.sarl.core.Schedules
-import io.sarl.hat.airsim.drones.behaviors.exploration.ExploreArea
+import io.sarl.hat.airsim.drones.behaviors.ExploreArea
 import io.sarl.hat.airsim.drones.sr.Drone
 import java.util.HashMap
 import java.util.UUID
@@ -18,6 +18,8 @@ import java.util.UUID
  * @author sebastian rodriguez
  * 
  */
+event StartSearchAndRescue
+
 agent BootAgent {
 	uses Logging, Lifecycle, DefaultContextInteractions, Schedules, Behaviors
 
@@ -64,8 +66,3 @@ agent BootAgent {
 
 }
 
-event StartSearchAndRescue {
-}
-
-event StopSearchAndRescue {
-}

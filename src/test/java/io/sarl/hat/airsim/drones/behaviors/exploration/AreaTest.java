@@ -1,12 +1,12 @@
 package io.sarl.hat.airsim.drones.behaviors.exploration;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.Iterator;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
 import io.sarl.hat.airsim.drones.Config;
+import io.sarl.hat.airsim.drones.sr.Area;
+import io.sarl.hat.airsim.drones.sr.Priority;
 
 class AreaTest {
 

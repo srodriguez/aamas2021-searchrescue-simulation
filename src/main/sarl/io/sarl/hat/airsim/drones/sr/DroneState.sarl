@@ -6,19 +6,27 @@ package io.sarl.hat.airsim.drones.sr
 import fr.utbm.airsim.api.Vector3r
 import io.sarl.airsim.perceptions.sim.SimGroundTruthKinematicsPerception
 import io.sarl.core.Behaviors
+import io.sarl.airsim.math.Vector3
 
 /** 
  * @author Sebastian Rodriguez
  * 
  */
 capacity DroneState {
+	def getName : String
+	def setName(name : String)
+	
 	def getPosition : Vector3r
+
 	def setPosition(pos : Vector3r)
+
+	def isInPosition(pos : Vector3r, error : float = 1) : boolean
 }
 
 skill DroneStateSkill implements DroneState {
 	var position : Vector3r = new Vector3r
-
+	var droneName : String
+	
 	def getPosition : Vector3r {
 		synchronized (this.position) {
 			this.position
@@ -31,8 +39,38 @@ skill DroneStateSkill implements DroneState {
 			this.position = pos
 		}
 	}
-}
 
+	def isInPosition(pos : Vector3r, error : float = 1) : boolean {
+		val dx = Math.abs(pos.x - this.position.x)
+
+		if (dx > error) {
+			return false
+		}
+
+		val dy = Math.abs(pos.y - this.position.y)
+
+		if (dy > error) {
+			return false
+		}
+
+		val dz = Math.abs(pos.z - this.position.z)
+		if (dz > error) {
+			return false
+		}
+
+		true
+
+	}
+	
+	def getName : String {
+		this.droneName
+	}
+	
+	def setName(name : String) {
+		this.droneName = name
+	}
+	
+}
 
 behavior AirsimDroneStateUpdater {
 	uses DroneState, Behaviors
@@ -42,6 +80,5 @@ behavior AirsimDroneStateUpdater {
 		wake(new DronePerceptionsUpdated)
 
 	}
-
 
 }

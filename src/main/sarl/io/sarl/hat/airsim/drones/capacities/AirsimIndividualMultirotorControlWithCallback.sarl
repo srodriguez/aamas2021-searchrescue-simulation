@@ -11,8 +11,8 @@ import io.sarl.airsim.simulation.skills.airsim.AirSimSimulationPerception
 import io.sarl.core.Logging
 import io.sarl.core.Schedules
 import io.sarl.hat.airsim.drones.IndividualMultirotorControlCapacityWithCallback
-import io.sarl.hat.airsim.drones.behaviors.exploration.Area
-import io.sarl.hat.airsim.drones.behaviors.exploration.Priority
+import io.sarl.hat.airsim.drones.sr.Area
+import io.sarl.hat.airsim.drones.sr.Priority
 import io.sarl.lang.core.Agent
 
 /** 
