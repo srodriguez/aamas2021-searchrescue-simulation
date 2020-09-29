@@ -18,15 +18,17 @@ import io.sarl.hat.airsim.drones.searchrescue.VictimDetected
 behavior VictimDetection {
 	uses Logging, Behaviors
 	uses DroneState
+	
+	val VIEW_RANGE = 3 //meters
 
-	on DronePerceptionsUpdated {
+	on DronePerceptionsUpdated [isFromMe] {
 
 		for (vic : Config.victimLocations) {
 			// Simulate we can see the ground. If you are above the victim
 			val p = new Vector3r(vic.x, vic.y, position.z)
 
 			// View Range, 3 meters
-			if (isInPosition(p, 3)) {
+			if (isInPosition(p, VIEW_RANGE)) {
 
 				wake(new VictimDetected(p.x, p.y))
 			}

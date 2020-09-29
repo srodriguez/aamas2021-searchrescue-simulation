@@ -9,7 +9,7 @@ import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
 import io.sarl.core.Schedules
-import io.sarl.hat.airsim.drones.behaviors.ExploreArea
+import io.sarl.hat.airsim.drones.behaviors.AreaAssignment
 import io.sarl.hat.airsim.drones.searchrescue.Drone
 import java.util.HashMap
 import java.util.UUID
@@ -34,6 +34,9 @@ agent BootAgent {
 
 	on Initialize {
 
+		loggingName = "Boot"
+		setLogLevel(Config.loggingLevel)
+		
 		info("Booting Simulations")
 		info("{0} total search areas: {1}", Config.areas.size, Config.areas)
 
@@ -59,7 +62,7 @@ agent BootAgent {
 		val areas = Config.areas
 		for (id : drones.keySet) {
 			val aNum = areaNumber++
-			emit(new ExploreArea(drones.get(id), areas.get(aNum)))[it.UUID == id]
+			emit(new AreaAssignment(drones.get(id), areas.get(aNum)))[it.UUID == id]
 
 		}
 	}

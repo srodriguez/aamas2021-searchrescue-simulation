@@ -20,12 +20,12 @@ behavior VerticalFirtResponderSignaling {
 
 	on PerformFirstResponderSignaling [isFromMe] {
 
-		val TOP = -10f
+		val TOP = -20f
 		val BOTTOM = -3f
 
-		val tooHigh = position.z < -7
+		val tooHigh = position.z < -15f
 
-		val tooLow = position.z > -5
+		val tooLow = position.z > -10f
 
 		val dest = new Vector3r(position.x, position.y, - 100f)
 
@@ -36,8 +36,8 @@ behavior VerticalFirtResponderSignaling {
 		}
 
 		// info("Signaling - LOW : {0}, HIGH {1} - destination {2}", tooLow, tooHigh, dest)
-		info("{6} - {3}: Area [{0},{1},{2}] -> nextPosition : [{4},{5}] ", assignedArea.x, assignedArea.y,
-			assignedArea.priority, "SIGNALING", position.x, position.y, name)
+		debug("{3}: Area [{0},{1},{2}] -> nextPosition : [{4},{5},{6}] ", assignedArea.x, assignedArea.y,
+			assignedArea.priority, "SIGNALING", dest.x, dest.y, dest.z)
 
 		moveToPosition(dest)
 	}

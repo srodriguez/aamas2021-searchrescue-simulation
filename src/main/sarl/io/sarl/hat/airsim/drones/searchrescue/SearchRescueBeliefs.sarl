@@ -14,8 +14,8 @@ capacity SearchRescueBeliefs {
 
 
 skill SearchRescueBeliefsSkill implements SearchRescueBeliefs {
-	//Impossible area
-	var assignedArea:Area = new Area(-1f,-1f,-1f,-1f, Priority.LOW)
+	//Default area
+	var assignedArea:Area = new Area(-1f,-1f,1f,1f, Priority.LOW)
 	
 	def getAssignedArea : Area {
 		this.assignedArea

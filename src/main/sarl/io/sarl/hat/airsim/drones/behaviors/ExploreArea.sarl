@@ -10,7 +10,7 @@ import io.sarl.hat.airsim.drones.searchrescue.Area
  * 
  */
 
-event ExploreArea {
+event AreaAssignment {
 	val area : Area
 	val droneName : String
 

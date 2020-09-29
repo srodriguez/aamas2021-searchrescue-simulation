@@ -8,40 +8,50 @@ import io.sarl.hat.airsim.drones.searchrescue.Area
 import io.sarl.hat.airsim.drones.searchrescue.Priority
 import java.util.List
 
-/** 
- * 
+/** 				
+ * 						^
+ *						|X (NORTH)
  * +-----+--------------+---------------+
- * |     |     LOW      |               |              
- * |     |    NO-VIC    |               |
- * +--(-20,20)----------+---------------+
- * |     |              |   HIGH        |              
- * |     |              |  VIC (15,15)  |
- * +--(-20,0)---------(0,0)-------------+   
- * |     |    LOW       |    HIGH       |
- * |     |  NO-VIC      |    NO-VIC     |
- * +-(-20,-20)-------(0,-20)------------+
- *  
+ * |     |              |               |              
+ * |     |              |               |
+ * +-(100,-50)----------+---------------+
+ * |     |              |               |
+ * |     |              |               |
+ * |     |              |               |              
+ * |     |              |               |
+ * +--(50,-50)----------+---------------+
+ * |     |       LOW    |               |    
+ * |     |     NO-VIC   |               | 
+ * |     |              |               | 
+ * +---(0,-50)--------(0,0)-------------+-----------+------------>
+ * |     |    HIGH      |               |           |         Y (EAST)
+ * |     | VIC(-49,-49) |               |LOW/NOVIC  |
+ * |     |  (Trees)     |               |           |
+ * +-(-50,-50)----------+------------(-50, 100)-----+-------------
+ * |     |              |               |
+ * |     |              |    HIGH       |
+ * |     |              |   NO-VIC      |
+ * |-----|---------(-100,0)-------------+---------------------
+ * |     |              |               |
+ * 
+ *  (0,0) is almost the center of the soccer field. North towards volley ball courts.
+ * 
  * @author Sebastian Rodriguez
+ * 
+ * Airsim Uses NED coordinates
  * 
  */
 class Config extends Object {
 
 	val static areas : List<Area> = newLinkedList
-	val static areaSize = 20f
+	val static areaSize = 50f
 
 	def static getVictimLocations() : List<Vector3r> {
 		newLinkedList(
-			new Vector3r(15,15, 0)
+			new Vector3r(-49,-49, 0)// Make sure to update Airsim setting.json to have a victim's avatar in that location.
 		)
 	}
 
-	def static getFlyAltitude : Float {
-		-7f
-	}
-
-	def static viewRange : Float {
-		5f
-	}
 
 	def static getAreas : List<Area> {
 		if (areas.empty) {
@@ -53,10 +63,10 @@ class Config extends Object {
 
 	def static fixAreas : List<Area> {
 		val res = newLinkedList
-		res.add(new Area(-20f, 20f, areaSize, areaSize, Priority.LOW))
-		res.add(new Area(0f, 0f, areaSize, areaSize, Priority.HIGH))
-		res.add(new Area(-20f, -20f, areaSize, areaSize, Priority.LOW))		
-		res.add(new Area(0f, -20f, areaSize, areaSize, Priority.HIGH))
+		res.add(new Area(0f, -50f, areaSize, areaSize, Priority.LOW))
+		res.add(new Area(-50f, -50f, areaSize, areaSize, Priority.HIGH))
+		res.add(new Area(-50f, 100f, areaSize, areaSize, Priority.HIGH))		
+		res.add(new Area(-100f, 0f, areaSize, areaSize, Priority.HIGH))
 		
 		res
 	}
@@ -71,5 +81,18 @@ class Config extends Object {
 			}
 		}
 		res
+	}
+
+	def static getFlyAltitude : Float {
+		-15f
+	}
+
+	def static viewRange : Float {
+		5f
+	}
+
+
+	def static loggingLevel : int {
+		5
 	}
 }

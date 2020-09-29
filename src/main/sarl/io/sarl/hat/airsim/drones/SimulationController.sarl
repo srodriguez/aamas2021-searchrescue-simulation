@@ -53,6 +53,9 @@ agent SimulationController {
 	val MAX_REFRESH = 10
 
 	on Initialize {
+		loggingName = "SimulationController"
+		setLogLevel(Config.loggingLevel)
+		
 		var server : String
 		var port : Integer
 
@@ -60,6 +63,9 @@ agent SimulationController {
 			server = occurrence.parameters.get(0) as String
 			port = occurrence.parameters.get(1) as Integer
 		}
+
+		
+		
 
 		// Install the simulation control capacities
 		setSkill(new AirSimSimulationControl(server, port), SimulationControlCapacity)
@@ -101,8 +107,8 @@ agent SimulationController {
 
 	on MoveToPosition {
 		occurrence.droneBody.moveToPosition(occurrence.x, occurrence.y, occurrence.z, occurrence.velocity)
-		// info("Simulation sending body {0} to [{1},{2},{3}] with velocity: {4} ", occurrence.droneBody, occurrence.x,
-		// occurrence.y, occurrence.z, occurrence.velocity)
+		debug("{0} to [{1},{2},{3}] with velocity: {4} ", occurrence.droneBody, occurrence.x,
+		 occurrence.y, occurrence.z, occurrence.velocity)
 	}
 
 	on TakeOff {

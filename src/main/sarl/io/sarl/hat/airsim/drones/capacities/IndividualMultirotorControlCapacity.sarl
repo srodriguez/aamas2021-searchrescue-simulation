@@ -12,17 +12,25 @@ import io.sarl.hat.airsim.drones.TakeOffCompleted
  */
 capacity IndividualMultirotorControlCapacity {
 	
+	/**
+	 * Take off command to the body
+	 */
 	def takeOff fires TakeOffCompleted
 
 	/** 
-	 * Move-to-position order for the given vehicle
+	 * Move-to-position command to the body
 	 * @param x the x position
 	 * @param y the y position
 	 * @param z the z position
 	 * @param velocity the speed to move the point
 	 */
-	def moveToPosition(x : Float, y : Float, z : Float, velocity : Float = 3f)
+	def moveToPosition(x : Float, y : Float, z : Float, velocity : Float = 7f)
+	
+	/** Move-to-position command to the body
+	 * @param pos the position
+	 * @param velocity the speed to move the point
+	 */
 
-	def moveToPosition(pos: Vector3r, velocity : Float = 3f)
+	def moveToPosition(pos: Vector3r, velocity : Float = 7f)
 
 }

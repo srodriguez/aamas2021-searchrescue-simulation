@@ -6,7 +6,6 @@ package io.sarl.hat.airsim.drones.searchrescue
 import io.sarl.core.Behaviors
 import io.sarl.core.Initialize
 import io.sarl.core.Logging
-import io.sarl.hat.airsim.drones.behaviors.ExploreArea
 import io.sarl.hat.airsim.drones.behaviors.PerformFirstResponderSignaling
 import io.sarl.hat.airsim.drones.behaviors.PerformPlowSweep
 import io.sarl.hat.airsim.drones.behaviors.PerformRandomSweep
@@ -18,6 +17,8 @@ import io.sarl.hat.airsim.drones.capacities.IndividualMultirotorControlCapacity
 import io.sarl.hat.airsim.drones.capacities.SimControllerForwardIndividualMultirotorControl
 
 import static io.sarl.hat.airsim.drones.searchrescue.DroneIntention.*
+import io.sarl.hat.airsim.drones.behaviors.AreaAssignment
+import io.sarl.hat.airsim.drones.Config
 
 /** 
  * @author sebastianrodriguez
@@ -52,11 +53,9 @@ agent Drone {
 
 	var intention = TAKEOFF
 
-	
-
 	on Initialize {
 
-
+		
 		// Setup Skill to control my body
 		setSkill(new SimControllerForwardIndividualMultirotorControl(), IndividualMultirotorControlCapacity)
 
@@ -65,8 +64,8 @@ agent Drone {
 		registerBehavior(new AirsimDroneStateUpdater(this))
 
 		name = occurrence.parameters.get(0) as String
-		
-
+		loggingName = name
+		setLogLevel(Config.loggingLevel)
 
 		// Set beliefs for Search and Rescue Operations
 		setSkill(new SearchRescueBeliefsSkill, SearchRescueBeliefs)
@@ -84,9 +83,9 @@ agent Drone {
 	}
 
 	/** 
-	 * Handle a command to explore an area
+	 * Handle a the area assignment perception
 	 */
-	on ExploreArea {
+	on AreaAssignment {
 		assignedArea = occurrence.area
 	}
 

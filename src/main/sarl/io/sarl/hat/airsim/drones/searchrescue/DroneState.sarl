@@ -19,7 +19,7 @@ capacity DroneState {
 
 	def setPosition(pos : Vector3r)
 
-	def isInPosition(pos : Vector3r, error : float = 1) : boolean
+	def isInPosition(pos : Vector3r, error : float = 2f) : boolean
 }
 
 skill DroneStateSkill implements DroneState {
@@ -39,7 +39,7 @@ skill DroneStateSkill implements DroneState {
 		}
 	}
 
-	def isInPosition(pos : Vector3r, error : float = 1) : boolean {
+	def isInPosition(pos : Vector3r, error : float) : boolean {
 		val dx = Math.abs(pos.x - this.position.x)
 
 		if (dx > error) {

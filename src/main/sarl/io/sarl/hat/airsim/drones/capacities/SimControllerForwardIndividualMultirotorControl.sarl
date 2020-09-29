@@ -3,11 +3,11 @@
  */
 package io.sarl.hat.airsim.drones.capacities
 
+import fr.utbm.airsim.api.Vector3r
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Logging
 import io.sarl.hat.airsim.drones.MoveToPosition
 import io.sarl.hat.airsim.drones.TakeOff
-import fr.utbm.airsim.api.Vector3r
 
 /** 
  * @author Sebastian Rodriguez
@@ -17,15 +17,9 @@ skill SimControllerForwardIndividualMultirotorControl implements IndividualMulti
 	uses Logging, DefaultContextInteractions
 
 	def install {
-		// Function invoked when the skill is installed in the owner.
-		// You should put all the initialization statements in this block of code.
-		info("Installing the skill")
 	}
 
 	def uninstall {
-		// Function invoked when the skill is uninstalled from the owner.
-		// You should put all the resource release statements in this block of code.
-		info("Uninstalling the skill")
 	}
 
 	override moveToPosition(x : Float, y : Float, z : Float, velocity : Float) {
@@ -36,7 +30,7 @@ skill SimControllerForwardIndividualMultirotorControl implements IndividualMulti
 		emit(new TakeOff)
 
 	}
-
+	
 	override moveToPosition(pos : Vector3r, velocity : Float) {
 		this.moveToPosition(pos.x, pos.y, pos.z, velocity)
 	}
