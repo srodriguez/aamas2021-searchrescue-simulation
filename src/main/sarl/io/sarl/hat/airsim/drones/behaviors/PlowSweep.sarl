@@ -48,8 +48,8 @@ class PlowPathGenerator {
 	def static generatePath(area : Area, flyAltitude : float) : Vector3r[] {
 		val path : List<Vector3r> = newArrayList
 
-		val gapX = 5f
-		val gapY = 5f
+		val gapX = 10f
+		val gapY = 10f
 
 		val finalX = area.x + area.width
 		val finalY = area.y + area.height

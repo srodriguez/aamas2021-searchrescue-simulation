@@ -24,13 +24,13 @@ capacity IndividualMultirotorControlCapacity {
 	 * @param z the z position
 	 * @param velocity the speed to move the point
 	 */
-	def moveToPosition(x : Float, y : Float, z : Float, velocity : Float = 7f)
+	def moveToPosition(x : Float, y : Float, z : Float, velocity : Float = 5f)
 	
 	/** Move-to-position command to the body
 	 * @param pos the position
 	 * @param velocity the speed to move the point
 	 */
 
-	def moveToPosition(pos: Vector3r, velocity : Float = 7f)
+	def moveToPosition(pos: Vector3r, velocity : Float = 5f)
 
 }

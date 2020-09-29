@@ -65,7 +65,7 @@ class Config extends Object {
 		val res = newLinkedList
 		res.add(new Area(0f, -50f, areaSize, areaSize, Priority.LOW))
 		res.add(new Area(-50f, -50f, areaSize, areaSize, Priority.HIGH))
-		res.add(new Area(-50f, 100f, areaSize, areaSize, Priority.HIGH))		
+		res.add(new Area(-50f, 100f, areaSize, areaSize, Priority.LOW))		
 		res.add(new Area(-100f, 0f, areaSize, areaSize, Priority.HIGH))
 		
 		res
