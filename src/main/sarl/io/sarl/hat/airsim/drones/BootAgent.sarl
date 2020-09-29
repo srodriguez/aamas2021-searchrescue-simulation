@@ -10,7 +10,7 @@ import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
 import io.sarl.core.Schedules
 import io.sarl.hat.airsim.drones.behaviors.ExploreArea
-import io.sarl.hat.airsim.drones.sr.Drone
+import io.sarl.hat.airsim.drones.searchrescue.Drone
 import java.util.HashMap
 import java.util.UUID
 
@@ -24,7 +24,7 @@ agent BootAgent {
 	uses Logging, Lifecycle, DefaultContextInteractions, Schedules, Behaviors
 
 	//	val SERVER_IP = "131.170.26.250" // Fabio's
-	val SERVER_IP = "192.168.1.100" // Seb's
+	val SERVER_IP = "192.168.1.101" // Seb's
 	val SERVER_PORT = 41451
 
 	val pool = newLinkedList("Alpha", "Bravo", "Charly", "Delta")

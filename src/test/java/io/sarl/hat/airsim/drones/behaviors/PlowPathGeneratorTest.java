@@ -1,17 +1,13 @@
 package io.sarl.hat.airsim.drones.behaviors;
 
-import static io.sarl.hat.airsim.drones.sr.Priority.LOW;
+import static io.sarl.hat.airsim.drones.searchrescue.Priority.LOW;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-
-import java.util.Queue;
 
 import org.junit.jupiter.api.Test;
 
-
-
 import fr.utbm.airsim.api.Vector3r;
 import io.sarl.hat.airsim.drones.Config;
-import io.sarl.hat.airsim.drones.sr.Area;
+import io.sarl.hat.airsim.drones.searchrescue.Area;
 
 class PlowPathGeneratorTest {
 

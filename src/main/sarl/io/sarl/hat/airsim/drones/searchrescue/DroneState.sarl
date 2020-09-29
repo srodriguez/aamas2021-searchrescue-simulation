@@ -1,12 +1,11 @@
 /** 
  * 
  */
-package io.sarl.hat.airsim.drones.sr
+package io.sarl.hat.airsim.drones.searchrescue
 
 import fr.utbm.airsim.api.Vector3r
 import io.sarl.airsim.perceptions.sim.SimGroundTruthKinematicsPerception
 import io.sarl.core.Behaviors
-import io.sarl.airsim.math.Vector3
 
 /** 
  * @author Sebastian Rodriguez

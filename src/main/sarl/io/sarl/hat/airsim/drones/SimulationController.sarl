@@ -3,7 +3,6 @@
  */
 package io.sarl.hat.airsim.drones
 
-import io.sarl.airsim.perceptions.MultirotorStatePerception
 import io.sarl.airsim.perceptions.sim.SimGroundTruthKinematicsPerception
 import io.sarl.airsim.simulation.capacities.MultirotorSimulationControlCapacity
 import io.sarl.airsim.simulation.capacities.MultirotorSimulationPerceptionCapacity

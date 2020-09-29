@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.hat.airsim.drones.Config;
-import io.sarl.hat.airsim.drones.sr.Area;
-import io.sarl.hat.airsim.drones.sr.Priority;
+import io.sarl.hat.airsim.drones.searchrescue.Area;
+import io.sarl.hat.airsim.drones.searchrescue.Priority;
 
 class AreaTest {
 

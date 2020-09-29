@@ -5,13 +5,13 @@ package io.sarl.hat.airsim.drones.behaviors
 
 import fr.utbm.airsim.api.Vector3r
 import io.sarl.core.Logging
-import io.sarl.hat.airsim.drones.sr.Area
-import io.sarl.hat.airsim.drones.sr.SearchRescueBeliefs
+import io.sarl.hat.airsim.drones.Config
+import io.sarl.hat.airsim.drones.capacities.IndividualMultirotorControlCapacity
+import io.sarl.hat.airsim.drones.searchrescue.Area
+import io.sarl.hat.airsim.drones.searchrescue.DroneState
+import io.sarl.hat.airsim.drones.searchrescue.SearchRescueBeliefs
 import java.util.List
 import java.util.concurrent.ConcurrentLinkedDeque
-import io.sarl.hat.airsim.drones.Config
-import io.sarl.hat.airsim.drones.sr.DroneState
-import io.sarl.hat.airsim.drones.capacities.IndividualMultirotorControlCapacity
 
 /** 
  * @author sebastianrodriguez
@@ -26,7 +26,6 @@ behavior PlowSweep {
 	val path = new ConcurrentLinkedDeque<Vector3r>()
 
 	on PerformPlowSweep [isFromMe] {
-		
 
 		if (path.isEmpty) {
 			path.addAll(PlowPathGenerator.generatePath(assignedArea, Config.flyAltitude))
@@ -37,10 +36,6 @@ behavior PlowSweep {
 			nextWaypoint = path.poll
 		}
 
-		//info("Area [{0},{1},{2}] : {3} -> nextPosition : [{4},{5}] ", assignedArea.x, assignedArea.y,
-		//	assignedArea.priority, "PLOW", nextWaypoint.x, nextWaypoint.y)
-		
-		
 		moveToPosition(nextWaypoint)
 	}
 

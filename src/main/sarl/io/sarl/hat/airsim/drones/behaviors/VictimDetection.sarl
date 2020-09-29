@@ -7,9 +7,9 @@ import fr.utbm.airsim.api.Vector3r
 import io.sarl.core.Behaviors
 import io.sarl.core.Logging
 import io.sarl.hat.airsim.drones.Config
-import io.sarl.hat.airsim.drones.sr.DronePerceptionsUpdated
-import io.sarl.hat.airsim.drones.sr.DroneState
-import io.sarl.hat.airsim.drones.sr.VictimDetected
+import io.sarl.hat.airsim.drones.searchrescue.DronePerceptionsUpdated
+import io.sarl.hat.airsim.drones.searchrescue.DroneState
+import io.sarl.hat.airsim.drones.searchrescue.VictimDetected
 
 /** 
  * @author Sebastian Rodriguez

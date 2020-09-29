@@ -1,7 +1,7 @@
 /** 
  * 
  */
-package io.sarl.hat.airsim.drones.sr
+package io.sarl.hat.airsim.drones.searchrescue
 
 import io.sarl.core.Behaviors
 import io.sarl.core.Initialize
@@ -17,7 +17,7 @@ import io.sarl.hat.airsim.drones.behaviors.VictimDetection
 import io.sarl.hat.airsim.drones.capacities.IndividualMultirotorControlCapacity
 import io.sarl.hat.airsim.drones.capacities.SimControllerForwardIndividualMultirotorControl
 
-import static io.sarl.hat.airsim.drones.sr.DroneIntention.*
+import static io.sarl.hat.airsim.drones.searchrescue.DroneIntention.*
 
 /** 
  * @author sebastianrodriguez

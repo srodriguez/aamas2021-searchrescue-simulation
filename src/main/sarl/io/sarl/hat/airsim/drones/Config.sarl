@@ -4,8 +4,8 @@
 package io.sarl.hat.airsim.drones
 
 import fr.utbm.airsim.api.Vector3r
-import io.sarl.hat.airsim.drones.sr.Area
-import io.sarl.hat.airsim.drones.sr.Priority
+import io.sarl.hat.airsim.drones.searchrescue.Area
+import io.sarl.hat.airsim.drones.searchrescue.Priority
 import java.util.List
 
 /** 
