@@ -4,6 +4,7 @@ import io.sarl.hat.airsim.drones.searchrescue.Area
 
 /**
  * Notify that a victim was detected in (x,y) and share an image
+ * and Assist Victim
  */
 event VictimDetected {
 	val x : float
@@ -17,7 +18,8 @@ event VictimDetected {
 
 }
 
-event ExploreAreaAssignment {
+
+event AreaAssignment {
 	val area : Area
 	val droneName : String
 

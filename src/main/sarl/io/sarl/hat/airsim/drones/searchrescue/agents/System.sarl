@@ -11,33 +11,38 @@ import io.sarl.hat.airsim.drones.searchrescue.behaviors.FirstResponderGuiding
 import io.sarl.hat.airsim.drones.searchrescue.behaviors.PerformVictimIdentication
 import io.sarl.hat.airsim.drones.searchrescue.behaviors.VictimDetected
 import io.sarl.hat.airsim.drones.searchrescue.behaviors.VictimIdentification
+import io.sarl.hat.airsim.drones.searchrescue.behaviors.PerformGuidance
 
 /** 
  * @author Sebastian Rodriguez
  * 
  */
-agent System {
-	uses Logging, Behaviors, 
-	
-	//First Responder's base
-	val baseLocation = new Vector3r(0,0,0)
-	
-	on Initialize {
-		
-		//Register Behaviors to
-		
-		//Identify Victims from Images
-		registerBehavior(new VictimIdentification(this))
-		
-		//Guide FR to Victims
-		registerBehavior(new FirstResponderGuiding(this))
-		
-	}
+agent C2System {
+	uses Logging, Behaviors 
 
+	// First Responder's base
+	var baseLocation = new Vector3r(0, 0, 0)
+
+	on Initialize {
+
+		// Register Behaviors to
+		// Identify Victims from Images
+		registerBehavior(new VictimIdentification(this))
+
+		// Guide FR to Victims
+		registerBehavior(new FirstResponderGuiding(this))
+
+	}
+	
+	//Assist Victims detected
 	on VictimDetected {
-		
-		//Try to find out who is the victim
+
+		// Try to find out who is the victim
 		wake(new PerformVictimIdentication(occurrence.cameraImage))
+
+		val vicLocation = new Vector3r(occurrence.x, occurrence.y, 0)
+		
+		// Start guiding a FR
+		wake(new PerformGuidance(baseLocation, vicLocation))
 	}
 }
-

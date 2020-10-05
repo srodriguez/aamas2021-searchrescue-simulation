@@ -10,7 +10,7 @@ import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
 import io.sarl.core.Schedules
 import io.sarl.hat.airsim.drones.searchrescue.agents.Drone
-import io.sarl.hat.airsim.drones.searchrescue.behaviors.ExploreAreaAssignment
+import io.sarl.hat.airsim.drones.searchrescue.behaviors.AreaAssignment
 import java.util.HashMap
 import java.util.UUID
 
@@ -63,7 +63,7 @@ agent BootAgent {
 		val areas = Config.areas
 		for (id : drones.keySet) {
 			val aNum = areaNumber++
-			emit(new ExploreAreaAssignment(drones.get(id), areas.get(aNum)))[it.UUID == id]
+			emit(new AreaAssignment(drones.get(id), areas.get(aNum)))[it.UUID == id]
 		}
 	}
 

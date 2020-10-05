@@ -6,17 +6,40 @@ package io.sarl.hat.airsim.drones.searchrescue.behaviors
 import fr.utbm.airsim.api.Vector3r
 import io.sarl.core.Initialize
 import io.sarl.core.Logging
+import io.sarl.core.DefaultContextInteractions
 
 /** 
  * @author Sebastian Rodriguez
  * 
  */
+event PerformGuidance {
+	val origin : Vector3r
+	val dest : Vector3r
+
+	new(o : Vector3r, d : Vector3r) {
+		this.origin = o
+		this.dest = d
+	}
+}
+
+event InformPathFirstResponder {
+	val path : Vector3r[]
+
+	new(p : Vector3r[]) {
+		this.path = p
+	}
+}
+
 behavior FirstResponderGuiding {
-	uses Logging
+	uses Logging, DefaultContextInteractions, PathPlanning
 
 	on Initialize {
 		// set Dummy Implementation
 		setSkill(new DummyPathPlanning, PathPlanning)
+	}
+
+	on PerformGuidance {
+		emit(new InformPathFirstResponder(findPath(occurrence.origin, occurrence.dest)))
 	}
 
 }

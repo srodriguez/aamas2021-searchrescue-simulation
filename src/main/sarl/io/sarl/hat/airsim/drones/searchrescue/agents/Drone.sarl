@@ -11,7 +11,8 @@ import io.sarl.hat.airsim.drones.Config
 import io.sarl.hat.airsim.drones.capacities.IndividualMultirotorControlCapacity
 import io.sarl.hat.airsim.drones.capacities.SimControllerForwardIndividualMultirotorControl
 import io.sarl.hat.airsim.drones.searchrescue.Priority
-import io.sarl.hat.airsim.drones.searchrescue.behaviors.ExploreAreaAssignment
+import io.sarl.hat.airsim.drones.searchrescue.behaviors.AreaAssignment
+import io.sarl.hat.airsim.drones.searchrescue.behaviors.FirtResponderSignaling
 import io.sarl.hat.airsim.drones.searchrescue.behaviors.PerformFirstResponderSignaling
 import io.sarl.hat.airsim.drones.searchrescue.behaviors.PerformPlowSweep
 import io.sarl.hat.airsim.drones.searchrescue.behaviors.PerformRandomSweep
@@ -21,7 +22,6 @@ import io.sarl.hat.airsim.drones.searchrescue.behaviors.VictimDetected
 import io.sarl.hat.airsim.drones.searchrescue.behaviors.VictimDetection
 
 import static io.sarl.hat.airsim.drones.searchrescue.agents.DroneIntention.*
-import io.sarl.hat.airsim.drones.searchrescue.behaviors.FirtResponderSignaling
 
 /** 
  * @author sebastianrodriguez
@@ -78,7 +78,7 @@ agent Drone {
 	/** 
 	 * Handle a the area assignment perception
 	 */
-	on ExploreAreaAssignment {
+	on AreaAssignment {
 		assignedArea = occurrence.area
 	}
 
