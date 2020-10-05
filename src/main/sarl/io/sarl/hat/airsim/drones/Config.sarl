@@ -8,70 +8,58 @@ import io.sarl.hat.airsim.drones.searchrescue.Area
 import io.sarl.hat.airsim.drones.searchrescue.Priority
 import java.util.List
 
-/** 				
- * 						^
- *						|X (NORTH)
- * +-----+--------------+---------------+
- * |     |              |               |              
- * |     |              |               |
- * +-(100,-50)----------+---------------+
- * |     |              |               |
- * |     |              |               |
- * |     |              |               |              
- * |     |              |               |
- * +--(50,-50)----------+---------------+
- * |     |       LOW    |               |    
- * |     |     NO-VIC   |               | 
- * |     |              |               | 
- * +---(0,-50)--------(0,0)-------------+-----------+------------>
- * |     |    HIGH      |               |           |         Y (EAST)
- * |     | VIC(-49,-49) |               |LOW/NOVIC  |
- * |     |  (Trees)     |               |           |
- * +-(-50,-50)----------+------------(-50, 100)-----+-------------
- * |     |              |               |
- * |     |              |    HIGH       |
- * |     |              |   NO-VIC      |
- * |-----|---------(-100,0)-------------+---------------------
- * |     |              |               |
+/** 
  * 
- *  (0,0) is almost the center of the soccer field. North towards volley ball courts.
+ * General Configuration for Search and Rescue Application
  * 
+ * Airsim uses North-East-Down (NED) coordinates, then in (x,y,z) x is North, y is East and z is down (then z=-5 means 5 meters above ground)
  * @author Sebastian Rodriguez
- * 
- * Airsim Uses NED coordinates
  * 
  */
 class Config extends Object {
 
 	val static areas : List<Area> = newLinkedList
-	val static areaSize = 50f
+	val static areaSize = 30f
 
+	/* 
+	 * Get Victims locations for simulated scanning
+	 * Simulate 
+	 */
 	def static getVictimLocations() : List<Vector3r> {
 		newLinkedList(
-			new Vector3r(-49,-49, 0)// Make sure to update Airsim setting.json to have a victim's avatar in that location.
+			new Vector3r(37, 29, 0) // Make sure to update Airsim setting.json to have a victim's avatar in that location.
 		)
 	}
 
-
+	/** 
+	 * Areas that the drones will need to explore 
+	 */
 	def static getAreas : List<Area> {
 		if (areas.empty) {
-			// areas.addAll(generateAreas)
 			areas.addAll(fixAreas)
 		}
 		areas
 	}
 
-	def static fixAreas : List<Area> {
+	/* 
+	 * Fix set of areas
+	 */
+	private def static fixAreas : List<Area> {
 		val res = newLinkedList
-		res.add(new Area(0f, -50f, areaSize, areaSize, Priority.LOW))
-		res.add(new Area(-50f, -50f, areaSize, areaSize, Priority.HIGH))
-		res.add(new Area(-50f, 100f, areaSize, areaSize, Priority.LOW))		
-		res.add(new Area(-100f, 0f, areaSize, areaSize, Priority.HIGH))
-		
+
+		// Neighborhood
+		res.add(new Area(30f, 28f, areaSize, areaSize, Priority.HIGH))
+		res.add(new Area(-40f, -40f, areaSize, areaSize, Priority.HIGH))
+		res.add(new Area(-70f, 65f, areaSize, areaSize, Priority.HIGH))
+		res.add(new Area(-70f, 95f, areaSize, areaSize, Priority.LOW))
 		res
 	}
 
-	def static generateAreas : List<Area> {
+	/** 
+	 * Generate a grid on around (0,0) of {#areaSize} 
+	 * 
+	 */
+	private def static generateAreas : List<Area> {
 		val res = newLinkedList
 
 		val areasIt = 2
@@ -83,15 +71,24 @@ class Config extends Object {
 		res
 	}
 
+	/** 
+	 * The default fly altitude for drones
+	 */
 	def static getFlyAltitude : Float {
 		-15f
 	}
 
+	/** 
+	 * View range of drone's when detecting victims
+	 * 
+	 */
 	def static viewRange : Float {
 		5f
 	}
 
-
+	/** 
+	 * Logging level for the app.
+	 */
 	def static loggingLevel : int {
 		5
 	}
