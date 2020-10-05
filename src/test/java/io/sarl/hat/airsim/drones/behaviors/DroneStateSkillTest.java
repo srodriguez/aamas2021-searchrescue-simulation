@@ -7,7 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import fr.utbm.airsim.api.Vector3r;
-import io.sarl.hat.airsim.drones.searchrescue.DroneStateSkill;
+import io.sarl.hat.airsim.drones.searchrescue.agents.DroneStateSkill;
 
 class DroneStateSkillTest {
 	

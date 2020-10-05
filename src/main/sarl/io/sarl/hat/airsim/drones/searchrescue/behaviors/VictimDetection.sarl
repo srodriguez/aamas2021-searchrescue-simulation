@@ -1,22 +1,23 @@
 /** 
  * 
  */
-package io.sarl.hat.airsim.drones.behaviors
+package io.sarl.hat.airsim.drones.searchrescue.behaviors
 
 import fr.utbm.airsim.api.Vector3r
 import io.sarl.core.Behaviors
-import io.sarl.core.Logging
 import io.sarl.hat.airsim.drones.Config
-import io.sarl.hat.airsim.drones.searchrescue.DronePerceptionsUpdated
-import io.sarl.hat.airsim.drones.searchrescue.DroneState
-import io.sarl.hat.airsim.drones.searchrescue.VictimDetected
+import io.sarl.hat.airsim.drones.searchrescue.agents.DronePerceptionsUpdated
+import io.sarl.hat.airsim.drones.searchrescue.agents.DroneState
 
 /** 
+ * Simulate a Victim Detection scanning
+ * If found, send a notification event with location.
+ * 
  * @author Sebastian Rodriguez
  * 
  */
 behavior VictimDetection {
-	uses Logging, Behaviors
+	uses Behaviors
 	uses DroneState
 	
 	val VIEW_RANGE = 3 //meters

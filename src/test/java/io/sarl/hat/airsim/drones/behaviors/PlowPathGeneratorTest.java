@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import fr.utbm.airsim.api.Vector3r;
 import io.sarl.hat.airsim.drones.Config;
 import io.sarl.hat.airsim.drones.searchrescue.Area;
+import io.sarl.hat.airsim.drones.searchrescue.behaviors.PlowPathGenerator;
 
 class PlowPathGeneratorTest {
 

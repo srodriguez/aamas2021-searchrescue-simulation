@@ -5,16 +5,18 @@ package io.sarl.hat.airsim.drones.capacities
 
 import fr.utbm.airsim.api.Vector3r
 import io.sarl.core.DefaultContextInteractions
-import io.sarl.core.Logging
 import io.sarl.hat.airsim.drones.MoveToPosition
 import io.sarl.hat.airsim.drones.TakeOff
 
 /** 
+ * 
+ * Forward body control orders to a simulation controller listening in the default space.
+ * 
  * @author Sebastian Rodriguez
  * 
  */
 skill SimControllerForwardIndividualMultirotorControl implements IndividualMultirotorControlCapacity {
-	uses Logging, DefaultContextInteractions
+	uses DefaultContextInteractions
 
 	def install {
 	}

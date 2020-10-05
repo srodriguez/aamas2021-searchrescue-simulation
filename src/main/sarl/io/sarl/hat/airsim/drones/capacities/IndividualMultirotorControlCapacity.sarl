@@ -7,6 +7,9 @@ import fr.utbm.airsim.api.Vector3r
 import io.sarl.hat.airsim.drones.TakeOffCompleted
 
 /** 
+ * Ability to control a drone's body.
+ * Coordinates are in NED
+ * 
  * @author Sebastian Rodriguez
  * 
  */

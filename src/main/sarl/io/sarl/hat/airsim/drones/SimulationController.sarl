@@ -113,9 +113,8 @@ agent SimulationController {
 
 	on TakeOff {
 		val d = occurrence.droneBody
-		// info("{0} asking to take of...", d)
+		debug("{0} asking to take of...", d)
 		d.takeOff.join
-		d.hover.join
 		occurrence.droneMind.emitToAgent(new TakeOffCompleted)
 	}
 

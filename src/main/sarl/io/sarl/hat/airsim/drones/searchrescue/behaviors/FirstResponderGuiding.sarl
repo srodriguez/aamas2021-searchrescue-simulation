@@ -1,0 +1,39 @@
+/** 
+ * 
+ */
+package io.sarl.hat.airsim.drones.searchrescue.behaviors
+
+import fr.utbm.airsim.api.Vector3r
+import io.sarl.core.Initialize
+import io.sarl.core.Logging
+
+/** 
+ * @author Sebastian Rodriguez
+ * 
+ */
+behavior FirstResponderGuiding {
+	uses Logging
+
+	on Initialize {
+		// set Dummy Implementation
+		setSkill(new DummyPathPlanning, PathPlanning)
+	}
+
+}
+
+capacity PathPlanning {
+
+		/** 
+		 * Create a sequence of waypoints between origin and destination
+		 */
+	def findPath(origin : Vector3r, dest : Vector3r) : Vector3r[]
+}
+
+skill DummyPathPlanning implements PathPlanning {
+
+	def findPath(origin : Vector3r, dest : Vector3r) {
+		// not really helpful implementation...
+		newArrayList(origin, dest)
+	}
+
+}

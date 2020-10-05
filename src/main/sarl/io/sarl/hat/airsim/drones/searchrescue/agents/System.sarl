@@ -1,0 +1,43 @@
+/** 
+ * 
+ */
+package io.sarl.hat.airsim.drones.searchrescue.agents
+
+import fr.utbm.airsim.api.Vector3r
+import io.sarl.core.Behaviors
+import io.sarl.core.Initialize
+import io.sarl.core.Logging
+import io.sarl.hat.airsim.drones.searchrescue.behaviors.FirstResponderGuiding
+import io.sarl.hat.airsim.drones.searchrescue.behaviors.PerformVictimIdentication
+import io.sarl.hat.airsim.drones.searchrescue.behaviors.VictimDetected
+import io.sarl.hat.airsim.drones.searchrescue.behaviors.VictimIdentification
+
+/** 
+ * @author Sebastian Rodriguez
+ * 
+ */
+agent System {
+	uses Logging, Behaviors, 
+	
+	//First Responder's base
+	val baseLocation = new Vector3r(0,0,0)
+	
+	on Initialize {
+		
+		//Register Behaviors to
+		
+		//Identify Victims from Images
+		registerBehavior(new VictimIdentification(this))
+		
+		//Guide FR to Victims
+		registerBehavior(new FirstResponderGuiding(this))
+		
+	}
+
+	on VictimDetected {
+		
+		//Try to find out who is the victim
+		wake(new PerformVictimIdentication(occurrence.cameraImage))
+	}
+}
+

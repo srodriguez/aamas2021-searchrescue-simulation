@@ -9,11 +9,10 @@ import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
 import io.sarl.core.Schedules
-import io.sarl.hat.airsim.drones.behaviors.AreaAssignment
-import io.sarl.hat.airsim.drones.searchrescue.Drone
+import io.sarl.hat.airsim.drones.searchrescue.agents.Drone
+import io.sarl.hat.airsim.drones.searchrescue.behaviors.ExploreAreaAssignment
 import java.util.HashMap
 import java.util.UUID
-
 
 event StartSearchAndRescue
 
@@ -26,9 +25,11 @@ event StartSearchAndRescue
 agent BootAgent {
 	uses Logging, Lifecycle, DefaultContextInteractions, Schedules, Behaviors
 
+	//Server Config
 	val SERVER_IP = "192.168.1.101" // Seb's
 	val SERVER_PORT = 41451
 
+	// Drones names
 	val pool = newLinkedList("Alpha", "Bravo", "Charly", "Delta")
 
 	val drones : HashMap<UUID, String> = newHashMap
@@ -62,8 +63,7 @@ agent BootAgent {
 		val areas = Config.areas
 		for (id : drones.keySet) {
 			val aNum = areaNumber++
-			emit(new AreaAssignment(drones.get(id), areas.get(aNum)))[it.UUID == id]
-
+			emit(new ExploreAreaAssignment(drones.get(id), areas.get(aNum)))[it.UUID == id]
 		}
 	}
 

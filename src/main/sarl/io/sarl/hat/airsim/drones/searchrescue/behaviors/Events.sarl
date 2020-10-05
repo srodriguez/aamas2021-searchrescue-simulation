@@ -1,0 +1,32 @@
+package io.sarl.hat.airsim.drones.searchrescue.behaviors
+
+import io.sarl.hat.airsim.drones.searchrescue.Area
+
+/**
+ * Notify that a victim was detected in (x,y) and share an image
+ */
+event VictimDetected {
+	val x : float
+	val y : float
+	var cameraImage : String
+
+	new(x : float, y : float) {
+		this.x = x
+		this.y = y
+	}
+
+}
+
+event ExploreAreaAssignment {
+	val area : Area
+	val droneName : String
+
+	new (droneName : String, area : Area) {
+		this.droneName = droneName
+		this.area = area
+	}
+}
+
+event PerformExploration
+
+

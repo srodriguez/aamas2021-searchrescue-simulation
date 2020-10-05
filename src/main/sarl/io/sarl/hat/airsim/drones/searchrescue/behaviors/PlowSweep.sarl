@@ -1,15 +1,15 @@
 /** 
  * 
  */
-package io.sarl.hat.airsim.drones.behaviors
+package io.sarl.hat.airsim.drones.searchrescue.behaviors
 
 import fr.utbm.airsim.api.Vector3r
 import io.sarl.core.Logging
 import io.sarl.hat.airsim.drones.Config
 import io.sarl.hat.airsim.drones.capacities.IndividualMultirotorControlCapacity
 import io.sarl.hat.airsim.drones.searchrescue.Area
-import io.sarl.hat.airsim.drones.searchrescue.DroneState
-import io.sarl.hat.airsim.drones.searchrescue.SearchRescueBeliefs
+import io.sarl.hat.airsim.drones.searchrescue.agents.DroneState
+import io.sarl.hat.airsim.drones.searchrescue.agents.SearchRescueBeliefs
 import java.util.List
 import java.util.concurrent.ConcurrentLinkedDeque
 

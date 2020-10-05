@@ -1,0 +1,65 @@
+/** 
+ * 
+ */
+package io.sarl.hat.airsim.drones.searchrescue.behaviors
+
+import io.sarl.core.Logging
+import org.eclipse.xtend.lib.annotations.Data
+import io.sarl.core.Initialize
+import io.sarl.core.Behaviors
+
+/** 
+ * @author Sebastian Rodriguez
+ * 
+ */
+event PerformVictimIdentication {
+	val image : String
+
+	new(img : String) {
+		this.image = img
+	}
+}
+
+event VictimIdentified {
+	val personID: PersonID
+	new(id:PersonID){
+		this.personID = id
+	}
+}
+
+behavior VictimIdentification {
+	uses Logging, FaceRecognition, Behaviors
+
+	on Initialize {
+		// Set dummy implementation
+		setSkill(new DummyFaceRecognition, FaceRecognition)
+	}
+
+	on PerformVictimIdentication {
+		// get the image
+		val image = occurrence.image
+		// run a face recognition
+		val pid = faceRecognition(image)
+		wake(new VictimIdentified(pid))
+	}
+}
+
+capacity FaceRecognition {
+	def faceRecognition(img : String) : PersonID
+}
+
+skill DummyFaceRecognition implements FaceRecognition {
+	uses Logging
+
+	def faceRecognition(img : String) : PersonID {
+		info("Running Face recognition...")
+		new PersonID("John Doe", "123456")
+	}
+
+}
+
+@Data
+class PersonID {
+	val name : String
+	val medicare : String
+}
