@@ -16,4 +16,10 @@ Drones need to search for victims and notify C2 and FR.
 
 Evaluation material can be found in [docs](docs) folder.
 
+## Development
+
+This project is develop with:
+* [TDF](http://www.tdfagents.com/): design and modeling.
+* [SARL](https://www.sarl.io): agent programming and implementation.
+* [AirSim](https://microsoft.github.io/AirSim/): drone simulation.
 
