@@ -41,3 +41,5 @@ src/main/generated-sources/
 .settings/
 .classpath
 .project
+
+.DS_Store
